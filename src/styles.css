@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@theme {
+    --color-ink: #0B0C0C;
+    --color-paper: #FAFAF9;
+    --color-mint: #B7ECD9;
+    --color-mint-deep: #1F9E73;
+    --color-mist: #E9F6F1;
+    --font-sans: "Inter", sans-serif;
+    --font-display: "Space Grotesk", sans-serif;
+}
+
+@layer base {
+    body {
+        background-color: var(--color-paper);
+        color: var(--color-ink);
+    }
+}

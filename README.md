@@ -4,7 +4,7 @@ Panel web de Mintly, aplicación para coleccionar cartas Pokémon. TFG de 2º DA
 
 ## Tecnologías
 
-Angular 19 con CSS y Angular Router. Tailwind CSS a partir del H2.
+Angular 19 con CSS, Angular Router y Tailwind CSS 4. Tipografías Inter y Space Grotesk, cargadas desde Google Fonts.
 
 ## Instalación y arranque
 
@@ -26,3 +26,10 @@ La aplicación se abre en `http://localhost:4200`. Necesita el backend (Mintly-b
 | TypeScript | 5.7.3 |
 | RxJS | 7.8.2 |
 | zone.js | 0.15.1 |
+| Tailwind CSS | 4.3.5 |
+| @tailwindcss/postcss | 4.3.5 |
+| PostCSS | 8.5.32 |
+
+## Estilos
+
+La paleta de Mintly y las tipografías están definidas una sola vez en `src/styles.css`, dentro del bloque `@theme`. Colores disponibles como clases de Tailwind: `ink`, `paper`, `mint`, `mint-deep` y `mist`. Fuentes: `font-sans` para el texto, que es Inter, y `font-display` para los títulos, que es Space Grotesk.
