@@ -5,37 +5,11 @@
   rel="stylesheet">
 
 <div class="flex min-h-screen">
-  <aside class="hidden w-60 shrink-0 border-r border-ink/10 p-6 md:block">
-    <p class="font-display text-xl font-bold">mintly</p>
-
-    <nav class="mt-10 flex flex-col gap-1">
-      <a href="#" class="rounded-lg bg-mist px-4 py-3 text-sm font-semibold text-ink">Inicio</a>
-      <a href="#" class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Mi
-        Colección</a>
-      <a href="#"
-        class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Competitivo</a>
-      <a href="#" class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Tienda</a>
-      <a href="#"
-        class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Carrito</a>
-    </nav>
-  </aside>
+  <app-sidebar></app-sidebar>
 
   <main class="flex-1 p-8 pb-24 md:pb-8">
-    <header class="flex items-center justify-between">
-      <h1 class="font-display text-3xl font-bold">Inicio</h1>
-
-      <div class="flex items-center gap-3">
-        <button class="rounded-full bg-mist px-4 py-2 text-sm font-semibold">Escanear carta</button>
-        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-mist text-sm font-semibold">CP</div>
-      </div>
-    </header>
+    <app-header titulo="Inicio"></app-header>
   </main>
-  
-  <nav class="fixed inset-x-0 bottom-0 flex justify-around border-t border-ink/10 bg-paper py-3 text-xs md:hidden">
-    <a href="#" class="font-semibold text-mint-deep">Inicio</a>
-    <a href="#" class="text-ink/60">Colección</a>
-    <a href="#" class="text-ink/60">Competitivo</a>
-    <a href="#" class="text-ink/60">Tienda</a>
-    <a href="#" class="text-ink/60">Carrito</a>
-  </nav>
+
+  <app-bottom-nav></app-bottom-nav>
 </div>
