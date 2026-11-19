@@ -1,0 +1,14 @@
+<a [routerLink]="['/cards', card().id]" class="group block">
+  @if (card().imageUrl) {
+    <img [src]="card().imageUrl" [alt]="card().name" loading="lazy"
+      class="aspect-[5/7] w-full rounded-lg object-cover shadow-sm">
+  } @else {
+    <div class="flex aspect-[5/7] w-full items-center justify-center rounded-lg bg-mist text-xs text-ink/40">
+      Sin imagen
+    </div>
+  }
+
+  <h3 class="mt-3 truncate font-display text-base font-bold group-hover:text-mint-deep">{{ card().name }}</h3>
+  <p class="mt-0.5 truncate text-xs text-ink/60">Nº {{ card().number }} · {{ card().rarity ?? 'Sin rareza' }}</p>
+  <p class="mt-0.5 truncate text-xs text-ink/60">{{ card().setName }}</p>
+</a>
