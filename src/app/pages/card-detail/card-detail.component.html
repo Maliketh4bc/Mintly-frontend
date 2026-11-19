@@ -1,0 +1,52 @@
+<app-header seccion="Carta"></app-header>
+
+<a routerLink="/inicio" class="mt-6 inline-block text-sm font-semibold text-mint-deep hover:underline">
+  ← Volver al inicio
+</a>
+
+@if (card) {
+  <section class="mt-6 flex flex-col gap-10 md:flex-row">
+    <div class="w-full max-w-xs shrink-0">
+      @if (card.imageUrl) {
+        <img [src]="card.imageUrl" [alt]="card.name" class="w-full rounded-2xl shadow-md">
+      } @else {
+        <div class="flex aspect-[5/7] w-full items-center justify-center rounded-2xl bg-mist text-sm text-ink/40">
+          Sin imagen
+        </div>
+      }
+    </div>
+
+    <div class="flex-1">
+      <p class="text-xs font-semibold uppercase text-ink/60">{{ card.setName }}</p>
+      <h2 class="mt-1 font-display text-4xl font-bold">{{ card.name }}</h2>
+
+      <dl class="mt-8 grid max-w-md grid-cols-2 gap-x-6 gap-y-4 rounded-2xl bg-mist p-6 text-sm">
+        <dt class="text-ink/60">Número</dt>
+        <dd class="font-semibold">{{ card.number }}</dd>
+
+        <dt class="text-ink/60">Rareza</dt>
+        <dd class="font-semibold">{{ card.rarity ?? 'Sin rareza' }}</dd>
+
+        <dt class="text-ink/60">Expansión</dt>
+        <dd class="font-semibold">{{ card.setName }}</dd>
+
+        <dt class="text-ink/60">Valor de mercado</dt>
+        <dd class="font-semibold">
+          @if (card.marketPrice !== null) {
+            {{ card.marketPrice | currency: 'EUR' }}
+          } @else {
+            Pendiente
+          }
+        </dd>
+
+        <dt class="text-ink/60">Referencia</dt>
+        <dd class="font-semibold">{{ card.externalId }}</dd>
+      </dl>
+    </div>
+  </section>
+} @else if (noEncontrada) {
+  <section class="mt-10 rounded-2xl bg-mist p-8 text-center">
+    <p class="font-display text-xl font-bold">No hemos encontrado esta carta</p>
+    <p class="mt-2 text-sm text-ink/60">Puede que el enlace esté mal o que la carta ya no exista.</p>
+  </section>
+}

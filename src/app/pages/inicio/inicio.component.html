@@ -1,0 +1,67 @@
+<app-header seccion="Inicio"></app-header>
+
+<section class="mt-10">
+  <div class="flex items-center justify-between">
+    <h2 class="font-display text-2xl font-bold">Tu colección</h2>
+    <a routerLink="/coleccion" class="text-sm font-semibold text-mint-deep hover:underline">Ver todo</a>
+  </div>
+
+  <div class="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+    @for (card of cards; track card.id) {
+      <app-card-item [card]="card"></app-card-item>
+    } @empty {
+      <p class="col-span-full text-sm text-ink/60">Todavía no tienes cartas en tu colección.</p>
+    }
+  </div>
+</section>
+
+<section class="mt-10 flex flex-col items-center gap-6 rounded-2xl bg-mist p-6 md:flex-row md:justify-between md:px-16">
+  <div class="flex items-center gap-6">
+    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-mint-deep font-display text-lg font-bold text-white">
+      E
+    </div>
+    <div>
+      <p class="font-display text-lg font-bold">ÉLITE</p>
+      <p class="text-sm text-ink/60">65 / 100 pts</p>
+      <p class="mt-1 text-xs font-semibold text-ink/60">TEMPORADA 04</p>
+    </div>
+  </div>
+
+  <button type="button" class="rounded-lg bg-mint-deep px-16 py-4 font-semibold text-white hover:opacity-90">
+    ¡A la batalla!
+  </button>
+
+  <div class="text-center">
+    <p class="text-sm font-semibold">Tu equipo</p>
+    <div class="mt-2 grid grid-cols-3 gap-2">
+      @for (hueco of [1, 2, 3, 4, 5, 6]; track hueco) {
+        <div class="h-10 w-10 rounded-md bg-mint"></div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="mt-10">
+  <div class="flex items-center justify-between">
+    <h2 class="font-display text-2xl font-bold">¡Últimas ofertas!</h2>
+    <a routerLink="/tienda" class="text-sm font-semibold text-mint-deep hover:underline">Ver todas</a>
+  </div>
+
+  <div class="mt-4 grid grid-cols-2 gap-8 lg:grid-cols-4">
+    @for (oferta of ofertas; track oferta.id) {
+      <article>
+        <div class="flex h-24 items-center justify-center rounded-xl bg-mist text-ink/40">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+            <path d="m3.3 7 8.7 5 8.7-5" />
+            <path d="M12 22V12" />
+          </svg>
+        </div>
+        <p class="mt-2 text-[10px] uppercase text-ink/60">{{ oferta.setName }}</p>
+        <p class="text-sm font-semibold">{{ oferta.name }}</p>
+        <p class="mt-1 text-sm font-bold text-mint-deep">{{ oferta.price | currency: 'EUR' }}</p>
+      </article>
+    }
+  </div>
+</section>
