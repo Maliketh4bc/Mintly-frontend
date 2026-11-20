@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 interface UsuarioRegistrado {
@@ -13,21 +13,33 @@ interface UsuarioRegistrado {
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
+
 export class RegistroComponent {
 
   registroForm = new FormGroup({
-    username: new FormControl('', { nonNullable: true }),
-    email: new FormControl('', { nonNullable: true}),
-    password: new FormControl('', {nonNullable: true}),
-    confirmPassword: new FormControl('', { nonNullable: true}),
+    username: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(2)] }),
+    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
+    confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   usuarioRegistrado: UsuarioRegistrado | undefined;
 
-  onSubmit() {
-    const { username, email } = this.registroForm.getRawValue();
+  passwordsDistintas(): boolean {
+    const { password, confirmPassword } = this.registroForm.getRawValue();
+    return password !== confirmPassword;
+  }
 
-    console.log('Registro simulado:', {username, email});
+  onSubmit(form: FormGroupDirective) {
+    this.registroForm.markAllAsTouched();
+
+    if (this.registroForm.invalid || this.passwordsDistintas()) {
+      return;
+    }
+
+    const { username, email } = this.registroForm.getRawValue();
+    console.log('Registro simulado:', { username, email });
     this.usuarioRegistrado = { username, email };
+    form.resetForm();
   }
 }
