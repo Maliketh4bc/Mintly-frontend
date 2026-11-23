@@ -1,12 +1,18 @@
-<nav class="mt-10 flex flex-col gap-1">
-  <a routerLink="/inicio" routerLinkActive="bg-mist text-ink!"
-    class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Inicio</a>
-  <a routerLink="/coleccion" routerLinkActive="bg-mist text-ink!"
-    class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Mi Colección</a>
-  <a routerLink="/tienda" routerLinkActive="bg-mist text-ink!"
-    class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Tienda</a>
-  <a routerLink="/carrito" routerLinkActive="bg-mist text-ink!"
-    class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Carrito</a>
-  <a routerLink="/perfil" routerLinkActive="bg-mist text-ink!"
-    class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">Perfil</a>
-</nav>
+<aside class="flex w-64 shrink-0 flex-col border-r border-ink/10 p-6">
+  <a routerLink="/panel" class="font-display text-2xl font-bold">mintly</a>
+  <p class="mt-1 text-xs font-semibold uppercase text-ink/50">Panel de tienda</p>
+
+  <nav class="mt-10 flex flex-col gap-1">
+    @for (enlace of enlaces; track enlace.ruta) {
+      <a [routerLink]="enlace.ruta" routerLinkActive="bg-mist text-ink!"
+        class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/60 hover:bg-mist hover:text-ink">
+        {{ enlace.texto }}
+      </a>
+    }
+  </nav>
+
+  <div class="mt-auto flex flex-col gap-1 border-t border-ink/10 pt-6">
+    <a routerLink="/" class="rounded-lg px-4 py-2 text-sm text-ink/60 hover:bg-mist hover:text-ink">Ver la parte pública</a>
+    <a routerLink="/login" class="rounded-lg px-4 py-2 text-sm text-ink/60 hover:bg-mist hover:text-ink">Cerrar sesión</a>
+  </div>
+</aside>

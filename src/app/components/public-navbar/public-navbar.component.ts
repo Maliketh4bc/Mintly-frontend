@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-bottom-nav',
+  selector: 'app-public-navbar',
   imports: [RouterLink, RouterLinkActive],
-  templateUrl: './bottom-nav.component.html',
-  styleUrl: './bottom-nav.component.css'
+  templateUrl: './public-navbar.component.html',
+  styleUrl: './public-navbar.component.css'
 })
-export class BottomNavComponent {
+export class PublicNavbarComponent {
 
 }
