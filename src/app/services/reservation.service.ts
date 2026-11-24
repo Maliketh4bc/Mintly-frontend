@@ -47,4 +47,14 @@ export class ReservationService {
   getReservationByCode(code: string): Observable<Reservation | undefined> {
     return of(this.reservations.find(r => r.code === code));
   }
+
+  confirmPickup(id: number): Observable<Reservation | undefined> {
+    const reservation = this.reservations.find(r => r.id === id);
+
+    if (reservation && reservation.status === 'activa') {
+      reservation.status = 'recogida';
+    }
+
+    return of(reservation);
+  }
 }
