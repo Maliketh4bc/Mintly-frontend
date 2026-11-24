@@ -1,70 +1,71 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { Shop } from '../models/shop';
 import { CardCondition, Offer } from '../models/offer';
-import { MOCK_SHOPS } from '../data/mock-shops';
-import { MOCK_OFFERS } from '../data/mock-offers';
-import { MOCK_CARDS } from '../data/mock-cards';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OfferService {
+  private http = inject(HttpClient);
+  private shopsUrl = 'http://localhost:3000/shops';
+  private apiUrl = 'http://localhost:3000/offers';
 
-  private shops: Shop[] = [...MOCK_SHOPS];
-  private offers: Offer[] = [...MOCK_OFFERS];
-
+  // tiendas
   getShops(): Observable<Shop[]> {
-    return of(this.shops);
+    return this.http.get<Shop[]>(this.shopsUrl);
   }
 
   getShop(id: number): Observable<Shop | undefined> {
-    return of(this.shops.find(shop => shop.id === id));
+    const params = new HttpParams().set('id', id);
+    return this.http.get<Shop[]>(this.shopsUrl, { params }).pipe(map(shops => shops[0]));
   }
 
+  // listar y buscar ofertas
   getOffers(): Observable<Offer[]> {
-    return of(this.offers);
+    return this.http.get<Offer[]>(this.apiUrl);
   }
 
   getOffer(id: number): Observable<Offer | undefined> {
-    return of(this.offers.find(offer => offer.id === id));
+    const params = new HttpParams().set('id', id);
+    return this.http.get<Offer[]>(this.apiUrl, { params }).pipe(map(offers => offers[0]));
   }
 
   getOffersByShop(shopId: number): Observable<Offer[]> {
-    return of(this.offers.filter(offer => offer.shopId === shopId));
+    const params = new HttpParams().set('shopId', shopId);
+    return this.http.get<Offer[]>(this.apiUrl, { params });
   }
 
   getOffersByCard(cardId: number): Observable<Offer[]> {
-    return of(this.offers.filter(offer => offer.cardId === cardId));
+    const params = new HttpParams().set('cardId', cardId);
+    return this.http.get<Offer[]>(this.apiUrl, { params });
   }
 
   searchByName(name: string): Observable<Offer[]> {
     const text = name.trim().toLowerCase();
-    return of(this.offers.filter(offer => {
-      const card = MOCK_CARDS.find(c => c.id === offer.cardId);
-      return card !== undefined && card.name.toLowerCase().includes(text);
-    }));
+    const params = new HttpParams().set('_expand', 'card');
+    return this.http.get<Offer[]>(this.apiUrl, { params }).pipe(
+      map(offers => offers.filter(o => o.card?.name.toLowerCase().includes(text)))
+    );
   }
 
   filterByCondition(condition: CardCondition): Observable<Offer[]> {
-    return of(this.offers.filter(offer => offer.condition === condition));
+    const params = new HttpParams().set('condition', condition);
+    return this.http.get<Offer[]>(this.apiUrl, { params });
   }
 
+  // crear, editar y quitar
   createOffer(offer: Omit<Offer, 'id' | 'createdAt'>): Observable<Offer> {
-    const nextId = Math.max(0, ...this.offers.map(o => o.id)) + 1;
-    const newOffer: Offer = { ...offer, id: nextId, createdAt: new Date().toISOString() };
-    this.offers.push(newOffer);
-    return of(newOffer);
+    return this.http.post<Offer>(this.apiUrl, { ...offer, createdAt: new Date().toISOString() });
   }
 
   updateOffer(offer: Offer): Observable<Offer> {
-    this.offers = this.offers.map(o => o.id === offer.id ? offer : o);
-    return of(offer);
+    const { card, ...data } = offer;
+    return this.http.patch<Offer>(`${this.apiUrl}/${offer.id}`, data);
   }
 
   deleteOffer(id: number): Observable<boolean> {
-    const before = this.offers.length;
-    this.offers = this.offers.filter(o => o.id !== id);
-    return of(this.offers.length < before);
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(map(() => true));
   }
 }

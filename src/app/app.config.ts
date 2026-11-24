@@ -1,5 +1,6 @@
 import { ApplicationConfig, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 import localeEs from '@angular/common/locales/es';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
@@ -11,6 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(),
     { provide: LOCALE_ID, useValue: 'es' },
   ]
 };

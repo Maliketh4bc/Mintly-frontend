@@ -1,3 +1,5 @@
+import { Card } from './card';
+
 export type CardCondition = 'Mint' | 'Near Mint' | 'Excellent' | 'Good' | 'Light Played' | 'Played' | 'Poor';
 
 export interface Offer {
@@ -8,4 +10,5 @@ export interface Offer {
   stock: number;
   condition: CardCondition;
   createdAt: string;
+  card?: Card;
 }
