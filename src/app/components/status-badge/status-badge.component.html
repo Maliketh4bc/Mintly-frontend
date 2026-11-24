@@ -1,0 +1,7 @@
+<span class="rounded-full px-3 py-1 text-xs font-semibold capitalize"
+  [class.bg-mist]="status() === 'activa'" [class.text-mint-deep]="status() === 'activa'"
+  [class.bg-gray-100]="status() === 'recogida'" [class.text-ink]="status() === 'recogida'"
+  [class.bg-amber-50]="status() === 'caducada'" [class.text-amber-700]="status() === 'caducada'"
+  [class.bg-red-50]="status() === 'cancelada'" [class.text-red-700]="status() === 'cancelada'">
+  {{ status() }}
+</span>
