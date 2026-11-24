@@ -22,7 +22,6 @@ export class OfferService {
     return this.http.get<Shop[]>(this.shopsUrl, { params }).pipe(map(shops => shops[0]));
   }
 
-  // listar y buscar ofertas
   getOffers(): Observable<Offer[]> {
     return this.http.get<Offer[]>(this.apiUrl);
   }
@@ -33,9 +32,10 @@ export class OfferService {
   }
 
   getOffersByShop(shopId: number): Observable<Offer[]> {
-    const params = new HttpParams().set('shopId', shopId);
+    const params = new HttpParams().set('shopId', shopId).set('_expand', 'card');
     return this.http.get<Offer[]>(this.apiUrl, { params });
   }
+
 
   getOffersByCard(cardId: number): Observable<Offer[]> {
     const params = new HttpParams().set('cardId', cardId);
