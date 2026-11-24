@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Shop } from '../models/shop';
 import { CardCondition, Offer } from '../models/offer';
-import { MOCK_SHOPS } from '../data/mock-shop';
+import { MOCK_SHOPS } from '../data/mock-shops';
 import { MOCK_OFFERS } from '../data/mock-offers';
 import { MOCK_CARDS } from '../data/mock-cards';
 

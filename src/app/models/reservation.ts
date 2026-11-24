@@ -11,4 +11,5 @@ export interface Reservation {
   createdAt: string;
   expiresAt: string;
   status: ReservationStatus;
+  pickedUpAt: string | null;
 }
