@@ -4,7 +4,9 @@ import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CardItemComponent } from '../../components/card-item/card-item.component';
 import { CardService } from '../../services/card.service';
+import { CollectionService } from '../../services/collection.service';
 import { Card } from '../../models/card';
+import { CollectionCondition, CollectionItem } from '../../models/collection-item';
 
 interface Oferta {
   id: number;
@@ -21,8 +23,19 @@ interface Oferta {
 })
 export class InicioComponent implements OnInit {
   private cardService = inject(CardService);
+  private collectionService = inject(CollectionService);
 
   cards: Card[] = [];
+  collection: CollectionItem[] = [];
+
+  conditionLabels: Record<CollectionCondition, string> = {
+    MINT: 'Mint',
+    NEAR_MINT: 'Near Mint',
+    EXCELLENT: 'Excellent',
+    GOOD: 'Good',
+    PLAYED: 'Played',
+    POOR: 'Poor',
+  };
 
   ofertas: Oferta[] = [
     { id: 1, setName: 'Obsidian Flames', name: 'Sobre limitado', price: 42.9 },
@@ -36,8 +49,23 @@ export class InicioComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.collectionService.getCollection().subscribe(items => {
+      this.collection = items;
+    });
+
     this.cardService.getCards().subscribe(cards => {
       this.cards = cards;
     });
+  }
+
+  totalCards(): number {
+    return this.collection.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  totalValue(): number {
+    return this.collection.reduce(
+      (total, item) => total + (item.card?.marketPrice ?? 0) * item.quantity,
+      0
+    );
   }
 }
