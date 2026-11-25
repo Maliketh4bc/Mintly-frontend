@@ -1,0 +1,65 @@
+<div class="flex items-center justify-between">
+  <app-header seccion="Reservas"></app-header>
+  <a routerLink="/panel/recogida"
+    class="rounded-lg bg-mint-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90">
+    Confirmar una recogida
+  </a>
+</div>
+
+<div class="mt-8 flex gap-2">
+  @for (opcion of opciones; track opcion.valor) {
+    <button type="button" (click)="filtro = opcion.valor"
+      [class.bg-ink]="filtro === opcion.valor" [class.text-paper]="filtro === opcion.valor"
+      [class.bg-mist]="filtro !== opcion.valor"
+      class="rounded-full px-4 py-2 text-sm font-semibold">
+      {{ opcion.texto }} ({{ contar(opcion.valor) }})
+    </button>
+  }
+</div>
+
+@if (errorMessage) {
+  <p class="mt-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{{ errorMessage }}</p>
+}
+
+@if (loading) {
+  <p class="mt-6 text-sm text-ink/60">Cargando reservas...</p>
+} @else if (reservasFiltradas().length === 0) {
+  <p class="mt-6 text-sm text-ink/60">No hay reservas con este estado.</p>
+} @else {
+  <table class="mt-6 w-full overflow-hidden rounded-xl border border-ink/10 bg-white text-left text-sm">
+    <thead class="bg-mist text-ink/60">
+      <tr>
+        <th class="px-4 py-3 font-semibold">Código</th>
+        <th class="px-4 py-3 font-semibold">Carta</th>
+        <th class="px-4 py-3 font-semibold">Cliente</th>
+        <th class="px-4 py-3 font-semibold">Precio</th>
+        <th class="px-4 py-3 font-semibold">Reservada</th>
+        <th class="px-4 py-3 font-semibold">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of reservasFiltradas(); track r.id) {
+        <tr class="border-t border-ink/10">
+          <td class="px-4 py-3 font-mono">{{ r.code }}</td>
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              <img [src]="r.cardImage" [alt]="r.cardName" class="w-8 rounded">
+              {{ r.cardName }}
+            </div>
+          </td>
+          <td class="px-4 py-3">{{ r.customerName }}</td>
+          <td class="px-4 py-3">{{ r.price | currency:'EUR' }}</td>
+          <td class="px-4 py-3">{{ r.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td class="px-4 py-3">
+            <app-status-badge [status]="r.status"></app-status-badge>
+            @if (r.status === 'activa') {
+              <p class="mt-1 text-xs text-ink/60">Caduca {{ r.expiresAt | date:'dd/MM HH:mm' }}</p>
+            } @else if (r.status === 'recogida' && r.pickedUpAt) {
+              <p class="mt-1 text-xs text-ink/60">El {{ r.pickedUpAt | date:'dd/MM HH:mm' }}</p>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

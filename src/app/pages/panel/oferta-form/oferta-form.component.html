@@ -1,0 +1,126 @@
+<app-header [seccion]="editId ? 'Editar oferta' : 'Nueva oferta'"></app-header>
+
+<a routerLink="/panel/ofertas" class="mt-6 inline-block text-sm font-semibold text-mint-deep hover:underline">
+  ← Volver a mis ofertas
+</a>
+
+@if (errorMessage) {
+  <p class="mt-6 max-w-2xl rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{{ errorMessage }}</p>
+}
+
+<form [formGroup]="offerForm" #form="ngForm" (ngSubmit)="onSave()" novalidate
+  class="mt-6 flex max-w-2xl flex-col gap-6 rounded-xl border border-ink/10 bg-white p-6">
+
+  <!-- Carta -->
+  @let cardId = offerForm.controls.cardId;
+  @let cardInvalid = cardId.invalid && (cardId.touched || form.submitted);
+  <div class="flex flex-col gap-2">
+    <label for="search" class="text-sm font-semibold">Carta</label>
+
+    @if (selectedCard(); as card) {
+      <div class="flex items-center gap-4 rounded-lg bg-mist p-3">
+        <img [src]="card.imageUrl" [alt]="card.name" class="w-14 rounded">
+        <div class="flex-1 text-sm">
+          <p class="font-semibold">{{ card.name }}</p>
+          <p class="text-ink/60">{{ card.setName }} · {{ card.number }}</p>
+          @if (card.marketPrice !== null) {
+            <p class="text-ink/60">Precio de mercado: {{ card.marketPrice | currency:'EUR' }}</p>
+          }
+        </div>
+        <button type="button" (click)="cardId.setValue(null)"
+          class="text-sm font-semibold text-mint-deep hover:underline">Cambiar</button>
+      </div>
+    } @else {
+      <input id="search" #search type="text" placeholder="Busca la carta por su nombre" autocomplete="off"
+        [value]="searchText" (input)="searchText = search.value"
+        [class.border-red-500!]="cardInvalid"
+        class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+
+      @if (filteredCards().length > 0) {
+        <ul class="flex flex-col divide-y divide-ink/10 rounded-lg border border-ink/10">
+          @for (card of filteredCards(); track card.id) {
+            <li>
+              <button type="button" (click)="selectCard(card)"
+                class="flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-mist">
+                <img [src]="card.imageUrl" [alt]="card.name" class="w-8 rounded">
+                <span class="font-semibold">{{ card.name }}</span>
+                <span class="text-ink/60">{{ card.setName }} · {{ card.number }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      } @else if (searchText.trim()) {
+        <small class="text-xs text-ink/60">No hay ninguna carta con ese nombre en el catálogo.</small>
+      }
+
+      @if (cardInvalid) {
+        <small class="text-xs text-red-600">Elige la carta que vas a vender.</small>
+      }
+    }
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <!-- Precio -->
+    @let price = offerForm.controls.price;
+    @let priceInvalid = price.invalid && (price.touched || form.submitted);
+    <div class="flex flex-col gap-1">
+      <label for="price" class="text-sm font-semibold">Precio en €</label>
+      <input id="price" type="number" step="0.01" formControlName="price"
+        [class.border-red-500!]="priceInvalid"
+        class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+      @if (priceInvalid) {
+        @if (price.hasError('required')) {
+          <small class="text-xs text-red-600">El precio es obligatorio.</small>
+        } @else if (price.hasError('min')) {
+          <small class="text-xs text-red-600">El precio debe ser mayor que 0.</small>
+        }
+      }
+    </div>
+
+    <!-- Estado -->
+    @let condition = offerForm.controls.condition;
+    @let conditionInvalid = condition.invalid && (condition.touched || form.submitted);
+    <div class="flex flex-col gap-1">
+      <label for="condition" class="text-sm font-semibold">Estado</label>
+      <select id="condition" formControlName="condition"
+        [class.border-red-500!]="conditionInvalid"
+        class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+        <option value="">Elige el estado</option>
+        @for (c of conditions; track c) {
+          <option [value]="c">{{ c }}</option>
+        }
+      </select>
+      @if (conditionInvalid) {
+        <small class="text-xs text-red-600">Elige el estado de la carta.</small>
+      }
+    </div>
+
+    <!-- Unidades -->
+    @let stock = offerForm.controls.stock;
+    @let stockInvalid = stock.invalid && (stock.touched || form.submitted);
+    <div class="flex flex-col gap-1">
+      <label for="stock" class="text-sm font-semibold">Unidades</label>
+      <input id="stock" type="number" step="1" formControlName="stock"
+        [class.border-red-500!]="stockInvalid"
+        class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+      @if (stockInvalid) {
+        @if (stock.hasError('required')) {
+          <small class="text-xs text-red-600">Las unidades son obligatorias.</small>
+        } @else if (stock.hasError('min')) {
+          <small class="text-xs text-red-600">No pueden ser negativas.</small>
+        } @else if (stock.hasError('pattern')) {
+          <small class="text-xs text-red-600">Tiene que ser un número entero.</small>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="flex gap-3">
+    <button type="submit" class="rounded-lg bg-mint-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90">
+      @if (editId) { Guardar cambios } @else { Crear oferta }
+    </button>
+    <a routerLink="/panel/ofertas" class="rounded-lg px-5 py-3 text-sm font-semibold text-ink/60 hover:bg-mist">
+      Cancelar
+    </a>
+  </div>
+</form>

@@ -1,0 +1,117 @@
+    <app-header seccion="Datos de la tienda"></app-header>
+    <p class="mt-2 text-sm text-ink/60">Así aparece tu tienda en la parte pública de Mintly.</p>
+
+    @if (errorMessage) {
+    <p class="mt-6 max-w-2xl rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{{ errorMessage }}</p>
+    }
+    @if (successMessage) {
+    <p class="mt-6 max-w-2xl rounded-lg bg-mist px-4 py-3 text-sm font-semibold text-mint-deep">{{ successMessage }}</p>
+    }
+
+    @if (loading) {
+    <p class="mt-8 text-sm text-ink/60">Cargando datos...</p>
+    } @else {
+    <form [formGroup]="shopForm" #form="ngForm" (ngSubmit)="onSave()" novalidate
+        class="mt-6 flex max-w-2xl flex-col gap-6 rounded-xl border border-ink/10 bg-white p-6">
+
+        @let name = shopForm.controls.name;
+        @let nameInvalid = name.invalid && (name.touched || form.submitted);
+        <div class="flex flex-col gap-1">
+        <label for="name" class="text-sm font-semibold">Nombre de la tienda</label>
+        <input id="name" type="text" formControlName="name"
+            [class.border-red-500!]="nameInvalid"
+            class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+        @if (nameInvalid) {
+            @if (name.hasError('required')) {
+            <small class="text-xs text-red-600">El nombre es obligatorio.</small>
+            } @else if (name.hasError('maxlength')) {
+            <small class="text-xs text-red-600">Como máximo 80 caracteres.</small>
+            }
+        }
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+
+        @let address = shopForm.controls.address;
+        @let addressInvalid = address.invalid && (address.touched || form.submitted);
+        <div class="col-span-2 flex flex-col gap-1">
+            <label for="address" class="text-sm font-semibold">Dirección</label>
+            <input id="address" type="text" formControlName="address"
+            [class.border-red-500!]="addressInvalid"
+            class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+            @if (addressInvalid) {
+            <small class="text-xs text-red-600">La dirección es obligatoria.</small>
+            }
+        </div>
+
+        @let city = shopForm.controls.city;
+        @let cityInvalid = city.invalid && (city.touched || form.submitted);
+        <div class="flex flex-col gap-1">
+            <label for="city" class="text-sm font-semibold">Ciudad</label>
+            <input id="city" type="text" formControlName="city"
+            [class.border-red-500!]="cityInvalid"
+            class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+            @if (cityInvalid) {
+            <small class="text-xs text-red-600">La ciudad es obligatoria.</small>
+            }
+        </div>
+        </div>
+
+        @let openingHours = shopForm.controls.openingHours;
+        @let hoursInvalid = openingHours.invalid && (openingHours.touched || form.submitted);
+        <div class="flex flex-col gap-1">
+        <label for="openingHours" class="text-sm font-semibold">Horario</label>
+        <input id="openingHours" type="text" formControlName="openingHours" placeholder="L-S 10:00-14:00 y 17:00-21:00"
+            [class.border-red-500!]="hoursInvalid"
+            class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+        @if (hoursInvalid) {
+            <small class="text-xs text-red-600">El horario es obligatorio.</small>
+        }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+        @let phone = shopForm.controls.phone;
+        @let phoneInvalid = phone.invalid && (phone.touched || form.submitted);
+        <div class="flex flex-col gap-1">
+            <label for="phone" class="text-sm font-semibold">Teléfono</label>
+            <input id="phone" type="tel" formControlName="phone"
+            [class.border-red-500!]="phoneInvalid"
+            class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+            @if (phoneInvalid) {
+            @if (phone.hasError('required')) {
+                <small class="text-xs text-red-600">El teléfono es obligatorio.</small>
+            } @else if (phone.hasError('pattern')) {
+                <small class="text-xs text-red-600">Escribe un teléfono válido, por ejemplo 952 123 456.</small>
+            }
+            }
+        </div>
+
+        @let email = shopForm.controls.email;
+        @let emailInvalid = email.invalid && (email.touched || form.submitted);
+        <div class="flex flex-col gap-1">
+            <label for="email" class="text-sm font-semibold">Correo de contacto</label>
+            <input id="email" type="email" formControlName="email"
+            [class.border-red-500!]="emailInvalid"
+            class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+            @if (emailInvalid) {
+            @if (email.hasError('required')) {
+                <small class="text-xs text-red-600">El correo es obligatorio.</small>
+            } @else if (email.hasError('email')) {
+                <small class="text-xs text-red-600">Escribe un correo válido.</small>
+            }
+            }
+        </div>
+        </div>
+
+        <div class="flex gap-3">
+        <button type="submit" [disabled]="shopForm.pristine || saving"
+            class="rounded-lg bg-mint-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40">
+            @if (saving) { Guardando... } @else { Guardar cambios }
+        </button>
+        <button type="button" (click)="onDiscard()" [disabled]="shopForm.pristine || saving"
+            class="rounded-lg px-5 py-3 text-sm font-semibold text-ink/60 hover:bg-mist disabled:opacity-40">
+            Descartar cambios
+        </button>
+        </div>
+    </form>
+    }

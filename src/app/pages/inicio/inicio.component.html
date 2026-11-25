@@ -1,50 +1,38 @@
 <app-header seccion="Inicio"></app-header>
 
 <section class="mt-10">
-  <div class="flex items-center justify-between">
-    <h2 class="font-display text-2xl font-bold">Tu colección</h2>
-    <a routerLink="/coleccion" class="text-sm font-semibold text-mint-deep hover:underline">Ver todo</a>
+  <div class="flex flex-wrap items-end justify-between gap-2">
+    <div>
+      <h2 class="font-display text-2xl font-bold">Mi colección</h2>
+      @if (collection.length > 0) {
+        <p class="mt-1 text-sm text-ink/60">
+          {{ totalCards() }} cartas · valor de mercado {{ totalValue() | currency: 'EUR' }}
+        </p>
+      }
+    </div>
+    <span class="rounded-full bg-mist px-3 py-1 text-xs font-semibold text-ink/60">Colección de ejemplo</span>
   </div>
 
   <div class="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
-    @for (card of cards; track card.id) {
-      <app-card-item [card]="card"></app-card-item>
-    } @empty {
-      <p class="col-span-full text-sm text-ink/60">Todavía no tienes cartas en tu colección.</p>
-    }
-  </div>
-</section>
-
-<section class="mt-10 flex flex-col items-center gap-6 rounded-2xl bg-mist p-6 md:flex-row md:justify-between md:px-16">
-  <div class="flex items-center gap-6">
-    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-mint-deep font-display text-lg font-bold text-white">
-      E
-    </div>
-    <div>
-      <p class="font-display text-lg font-bold">ÉLITE</p>
-      <p class="text-sm text-ink/60">65 / 100 pts</p>
-      <p class="mt-1 text-xs font-semibold text-ink/60">TEMPORADA 04</p>
-    </div>
-  </div>
-
-  <button type="button" class="rounded-lg bg-mint-deep px-16 py-4 font-semibold text-white hover:opacity-90">
-    ¡A la batalla!
-  </button>
-
-  <div class="text-center">
-    <p class="text-sm font-semibold">Tu equipo</p>
-    <div class="mt-2 grid grid-cols-3 gap-2">
-      @for (hueco of [1, 2, 3, 4, 5, 6]; track hueco) {
-        <div class="h-10 w-10 rounded-md bg-mint"></div>
+    @for (item of collection; track item.id) {
+      @if (item.card; as card) {
+        <div>
+          <app-card-item [card]="card"></app-card-item>
+          <p class="mt-1 text-xs font-semibold text-mint-deep">
+            ×{{ item.quantity }} · {{ conditionLabels[item.condition] }}
+          </p>
+        </div>
       }
-    </div>
+    } @empty {
+      <p class="col-span-full text-sm text-ink/60">Todavía no hay cartas en la colección.</p>
+    }
   </div>
 </section>
 
 <section class="mt-10">
   <div class="flex items-center justify-between">
     <h2 class="font-display text-2xl font-bold">¡Últimas ofertas!</h2>
-    <a routerLink="/tienda" class="text-sm font-semibold text-mint-deep hover:underline">Ver todas</a>
+    <a routerLink="/tiendas" class="text-sm font-semibold text-mint-deep hover:underline">Ver todas</a>
   </div>
 
   <div class="mt-4 grid grid-cols-2 gap-8 lg:grid-cols-4">
@@ -63,5 +51,28 @@
         <p class="mt-1 text-sm font-bold text-mint-deep">{{ oferta.price | currency: 'EUR' }}</p>
       </article>
     }
+  </div>
+</section>
+
+<section class="mt-10">
+  <div class="flex items-center justify-between">
+    <h2 class="font-display text-2xl font-bold">Cartas del catálogo</h2>
+    <a routerLink="/catalogo" class="text-sm font-semibold text-mint-deep hover:underline">Ver catálogo</a>
+  </div>
+
+  <div class="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+    @for (card of cards; track card.id) {
+      <app-card-item [card]="card"></app-card-item>
+    } @empty {
+      <p class="col-span-full text-sm text-ink/60">Todavía no hay cartas en el catálogo.</p>
+    }
+  </div>
+</section>
+
+<section class="mt-10 flex items-center gap-4 rounded-2xl bg-mist p-6">
+  <span class="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-paper">Próximamente</span>
+  <div>
+    <h2 class="font-display text-lg font-bold">Batallas</h2>
+    <p class="text-sm text-ink/60">Reta a otros coleccionistas con tus cartas y sube de rango.</p>
   </div>
 </section>

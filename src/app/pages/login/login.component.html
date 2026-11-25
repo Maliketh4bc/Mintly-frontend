@@ -1,7 +1,57 @@
-<section class="flex min-h-screen items-center justify-center px-4">
-    <div class="w-full max-w-md">
-        <p class="font-display text-xl font-bold">mintly</p>
-        <h1 class="mt-6 font-display text-3xl font-bold">Iniciar sesión</h1>
-        <p class="mt-2 text-sm text-ink/60">Pantalla de inicio de sesión. Pendiente (MNT-202).</p>
-    </div>
+<section class="hidden min-h-screen items-center justify-center bg-mist px-4 md:flex">
+  <div class="w-full max-w-md rounded-2xl border border-ink/10 bg-white p-10 shadow-sm">
+    <a routerLink="/" class="font-display text-2xl font-bold">mintly</a>
+    <p class="mt-1 text-xs font-semibold uppercase text-ink/50">Panel de tienda</p>
+
+    <h1 class="mt-8 font-display text-3xl font-bold">Inicia sesión</h1>
+    <p class="mt-2 text-sm text-ink/60">Entra con el correo de tu tienda para gestionar tus ofertas y reservas.</p>
+
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate class="mt-8 flex flex-col gap-5">
+
+      <div class="flex flex-col gap-1">
+        <label for="email" class="text-sm font-semibold">Correo</label>
+        <input id="email" name="email" type="email" autocomplete="email"
+          [(ngModel)]="email" #emailCtrl="ngModel" required email
+          [class.border-red-500!]="emailCtrl.invalid && (emailCtrl.touched || loginForm.submitted)"
+          class="rounded-lg border border-ink/15 px-4 py-3 text-sm outline-none focus:border-mint-deep">
+        @if (emailCtrl.invalid && (emailCtrl.touched || loginForm.submitted)) {
+          @if (emailCtrl.hasError('required')) {
+            <small class="text-xs text-red-600">El correo es obligatorio.</small>
+          } @else if (emailCtrl.hasError('email')) {
+            <small class="text-xs text-red-600">Escribe un correo válido.</small>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="password" class="text-sm font-semibold">Contraseña</label>
+        <div class="relative">
+          <input id="password" name="password" [type]="showPassword ? 'text' : 'password'"
+            autocomplete="current-password"
+            [(ngModel)]="password" #passwordCtrl="ngModel" required
+            [class.border-red-500!]="passwordCtrl.invalid && (passwordCtrl.touched || loginForm.submitted)"
+            class="w-full rounded-lg border border-ink/15 px-4 py-3 pr-20 text-sm outline-none focus:border-mint-deep">
+          <button type="button" (click)="showPassword = !showPassword"
+            class="absolute inset-y-0 right-3 text-xs font-semibold text-mint-deep">
+            {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </div>
+        @if (passwordCtrl.invalid && (passwordCtrl.touched || loginForm.submitted)) {
+          <small class="text-xs text-red-600">La contraseña es obligatoria.</small>
+        }
+      </div>
+
+      <button type="submit" [disabled]="sending"
+        class="mt-2 rounded-lg bg-mint-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40">
+        {{ sending ? 'Entrando...' : 'Entrar al panel' }}
+      </button>
+    </form>
+
+    <p class="mt-8 border-t border-ink/10 pt-6 text-xs text-ink/60">
+      ¿Eres coleccionista? Mintly para coleccionistas está en la app móvil.
+      <a routerLink="/" class="font-semibold text-mint-deep hover:underline">Volver a la parte pública</a>
+    </p>
+  </div>
 </section>
+
+<app-desktop-notice></app-desktop-notice>

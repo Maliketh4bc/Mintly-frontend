@@ -1,0 +1,39 @@
+    <app-header seccion="Catálogo"></app-header>
+    <p class="mt-2 text-sm text-ink/60">
+    Busca una carta para ver su precio de mercado y en qué tiendas de Málaga puedes reservarla.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="buscar()" class="mt-6 flex max-w-xl gap-2">
+    <input type="search" formControlName="busqueda" placeholder="Nombre de la carta, por ejemplo Charizard"
+        aria-label="Buscar carta"
+        class="flex-1 rounded-lg border border-ink/20 bg-white px-4 py-3 text-sm outline-none focus:border-mint-deep">
+    <button type="submit"
+        class="rounded-lg bg-mint-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90">
+        Buscar
+    </button>
+    </form>
+
+    @if (busquedaActual) {
+    <p class="mt-4 text-sm text-ink/60">
+        Resultados para «{{ busquedaActual }}»
+        <button type="button" (click)="limpiar()" class="ml-2 font-semibold text-mint-deep hover:underline">
+        Ver todo el catálogo
+        </button>
+    </p>
+    }
+
+    @if (errorMessage) {
+    <p class="mt-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{{ errorMessage }}</p>
+    }
+
+    @if (loading) {
+    <p class="mt-8 text-sm text-ink/60">Cargando cartas...</p>
+    } @else if (cards.length === 0 && !errorMessage) {
+    <p class="mt-8 text-sm text-ink/60">No hay ninguna carta que se llame así.</p>
+    } @else {
+    <div class="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+        @for (card of cards; track card.id) {
+        <app-card-item [card]="card"></app-card-item>
+        }
+    </div>
+    }
