@@ -91,4 +91,14 @@ const reservations = Array.from({ length: 12 }, (_, i) => {
   };
 });
 
-module.exports = () => ({ cards, shops, offers, reservations });
+// collection: cartas del usuario de demo, una fila por carta
+const collectionConditions = ['MINT', 'NEAR_MINT', 'EXCELLENT', 'GOOD', 'PLAYED', 'POOR'];
+
+const collection = Array.from(cards, (card, i) => ({
+  id: i + 1,
+  cardId: card.id,
+  quantity: faker.number.int({ min: 1, max: 4 }),
+  condition: faker.helpers.arrayElement(collectionConditions),
+  addedAt: faker.date.recent({ days: 60 }).toISOString(),
+}));
+module.exports = () => ({ cards, shops, offers, reservations, collection });
