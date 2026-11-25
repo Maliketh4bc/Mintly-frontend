@@ -36,9 +36,8 @@ export class OfferService {
     return this.http.get<Offer[]>(this.apiUrl, { params });
   }
 
-
   getOffersByCard(cardId: number): Observable<Offer[]> {
-    const params = new HttpParams().set('cardId', cardId);
+    const params = new HttpParams().set('cardId', cardId).set('_expand', 'shop');
     return this.http.get<Offer[]>(this.apiUrl, { params });
   }
 
