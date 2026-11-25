@@ -12,7 +12,6 @@ export class OfferService {
   private shopsUrl = 'http://localhost:3000/shops';
   private apiUrl = 'http://localhost:3000/offers';
 
-  // tiendas
   getShops(): Observable<Shop[]> {
     return this.http.get<Shop[]>(this.shopsUrl);
   }
@@ -20,6 +19,10 @@ export class OfferService {
   getShop(id: number): Observable<Shop | undefined> {
     const params = new HttpParams().set('id', id);
     return this.http.get<Shop[]>(this.shopsUrl, { params }).pipe(map(shops => shops[0]));
+  }
+
+  updateShop(id: number, changes: Partial<Shop>): Observable<Shop> {
+    return this.http.patch<Shop>(`${this.shopsUrl}/${id}`, changes);
   }
 
   getOffers(): Observable<Offer[]> {
