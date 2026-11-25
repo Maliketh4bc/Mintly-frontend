@@ -1,4 +1,5 @@
 import { Card } from './card';
+import { Shop } from './shop';
 
 export type CardCondition = 'Mint' | 'Near Mint' | 'Excellent' | 'Good' | 'Light Played' | 'Played' | 'Poor';
 
@@ -11,4 +12,5 @@ export interface Offer {
   condition: CardCondition;
   createdAt: string;
   card?: Card;
+  shop?: Shop;
 }

@@ -14,6 +14,13 @@ export class CardService {
     return this.http.get<Card[]>(this.apiUrl);
   }
 
+  searchCards(text: string): Observable<Card[]> {
+    const escaped = text.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const params = new HttpParams().set('name_like', escaped);
+    return this.http.get<Card[]>(this.apiUrl, { params });
+  }
+
+
   getCard(id: number): Observable<Card | undefined> {
     const params = new HttpParams().set('id', id);
     return this.http.get<Card[]>(this.apiUrl, { params }).pipe(map(cards => cards[0]));
