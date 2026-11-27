@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Reservation } from '../models/reservation';
+import { JSON_SERVER_URL } from '../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/reservations';
+  private apiUrl = `${JSON_SERVER_URL}/reservations`;
 
   getReservations(): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(this.apiUrl);
