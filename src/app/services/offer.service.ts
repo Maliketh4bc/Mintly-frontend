@@ -3,14 +3,15 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Shop } from '../models/shop';
 import { CardCondition, Offer } from '../models/offer';
+import { JSON_SERVER_URL } from '../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OfferService {
   private http = inject(HttpClient);
-  private shopsUrl = 'http://localhost:3000/shops';
-  private apiUrl = 'http://localhost:3000/offers';
+  private shopsUrl = `${JSON_SERVER_URL}/shops`;
+  private apiUrl = `${JSON_SERVER_URL}/offers`;
 
   getShops(): Observable<Shop[]> {
     return this.http.get<Shop[]>(this.shopsUrl);
